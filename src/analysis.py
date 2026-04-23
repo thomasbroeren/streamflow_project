@@ -38,4 +38,22 @@ def anomaly_timeseries(df, column):
     strmflw = df[column].values
     anomaly = strmflw - np.mean(strmflw)
     return anomaly
+
+def reservoir_simulation(df, inflows, capacity, initial_storage, demand):
+    storage = []
+    n_deficit_years = 0
+    inflows_s = inflows * 10**-6
+    for count, inflow in enumerate(inflows_s):
+        if count == 0:
+            st = initial_storage + inflow  - demand
+        else:
+            st = storage[count-1] + inflow - demand
+        if st > capacity:
+            st = capacity
+        if st < 0:
+            n_deficit_years += 1
+            st = 0
+        storage.append(st)
+    reliability = n_deficit_years/len(df['Year'].values)
+    return storage, n_deficit_years, reliability
     

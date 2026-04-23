@@ -37,3 +37,9 @@ anomaly = anomaly_timeseries(df, 'Yampa_Basin')
 flow = df['Yampa_Basin'].values
 
 plot_all_basins(df, basin_info)
+
+storage, n_deficit_years, reliability = reservoir_simulation(df, inflows = df['Gunnison_Basin'].values, capacity = 5, initial_storage = 2.5, demand = 3)
+
+print('The number of deficit years is',n_deficit_years, 'and the reliability is', reliability)
+
+plot_reservoir(0, years, storage, 5)
